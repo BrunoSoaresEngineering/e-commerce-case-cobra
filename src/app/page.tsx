@@ -1,9 +1,12 @@
 import MaxWidthWrapper from '@/components/Max-width-wrapper';
 import Phone from '@/components/Phone';
+import Underline from '@/components/Underline';
+import Reviews from '@/components/reviews/Reviews';
 import { Check } from 'lucide-react';
 import Image from 'next/image';
 import { formatNumber } from '@/lib/formatters';
 import Stars from './components/Stars';
+import snake2Image from '../../public/snake-2.png';
 
 const mainFeatures = [
   'High-quality, durable material',
@@ -20,6 +23,50 @@ const userPhotosHero = [
 ];
 
 const numCustomers = 2513;
+
+const testimonials = [
+  {
+    id: crypto.randomUUID(),
+    stars: 5,
+    name: 'David',
+    imageUrl: '/users/user-1.png',
+    message: 'The case feels durable and I even got a compliment on the design. Had the case for two and a half months now and the image is super clear, on the case I had before, the image started fading into yellow-ish color after a couple weeks. Love it.',
+  },
+  {
+    id: crypto.randomUUID(),
+    stars: 5,
+    name: 'João',
+    imageUrl: '/users/user-4.jpg',
+    message: 'I usually keep my phone together with my keys in my pocket and that led to some pretty heavy scratchmarks on all of my last phone cases. This one, besides a barely noticeable scratch on the corner, looks brand new after about half a year. I dig it.',
+  },
+];
+
+const reviews = [
+  {
+    id: crypto.randomUUID(),
+    imgSrc: '/testimonials/1.jpg',
+  },
+  {
+    id: crypto.randomUUID(),
+    imgSrc: '/testimonials/2.jpg',
+  },
+  {
+    id: crypto.randomUUID(),
+    imgSrc: '/testimonials/3.jpg',
+  },
+  {
+    id: crypto.randomUUID(),
+    imgSrc: '/testimonials/4.jpg',
+  },
+  {
+    id: crypto.randomUUID(),
+    imgSrc: '/testimonials/5.jpg',
+  },
+  {
+    id: crypto.randomUUID(),
+    imgSrc: '/testimonials/6.jpg',
+  },
+];
 
 export default function Home() {
   return (
@@ -73,7 +120,7 @@ export default function Home() {
                 ))}
               </div>
               <div className="flex flex-col justify-between items-center sm:items-start">
-                <Stars quantity={5} />
+                <Stars quantity={5} size={4} />
                 <p>
                   <span className="font-semibold">{formatNumber(numCustomers)}</span>
                   {' '}
@@ -101,6 +148,63 @@ export default function Home() {
               />
               <Phone imgSrc="/testimonials/1.jpg" className="w-64" />
             </div>
+          </div>
+        </MaxWidthWrapper>
+      </section>
+
+      <section className="bg-slate-100 py-24">
+        <MaxWidthWrapper className="flex flex-col items-center gap-16">
+          <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6">
+            <Image
+              src={snake2Image}
+              alt="Casecobra image"
+              className="order-2 w-24"
+            />
+            <h2 className="mt-2 order-3 lg:order-1 text-5xl md:text-6xl font-bold text-center text-balance tracking-tight leading-tight">
+              What our
+              {' '}
+              <span className="relative">
+                customers
+                <Underline className="hidden sm:block absolute inset-x-0 -bottom-6 text-green-600" />
+              </span>
+              {' '}
+              say
+            </h2>
+          </div>
+          <div className="mx-auto lg:mx-0 px-4 max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-y-16">
+            {testimonials.map((testimonial) => (
+              <article key={testimonial.id} className="flex flex-col gap-4 lg:pr-8 xl:pr-20">
+                <Stars quantity={testimonial.stars} size={5} />
+                <div className="text-lg leading-8">
+                  <p>
+                    &quot;
+                    {testimonial.message}
+                    &quot;
+                  </p>
+                </div>
+                <div className="flex gap-4 mt-2">
+                  <Image
+                    src={testimonial.imageUrl}
+                    alt={`Picture of ${testimonial.name}`}
+                    width={12}
+                    height={12}
+                    className="w-12 h-12 object-cover rounded-full"
+                    sizes="10vw"
+                  />
+                  <div className="flex flex-col">
+                    <p className="font-semibold">{testimonial.name}</p>
+                    <div className="flex gap-1.5 items-center text-zinc-600">
+                      <Check className="h-4 w-4 text-green-600 stroke-[3px]" />
+                      <p className="text-sm">Verified Purchase</p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div>
+            <Reviews reviews={reviews} />
           </div>
         </MaxWidthWrapper>
       </section>
