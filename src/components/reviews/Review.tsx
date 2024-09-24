@@ -1,5 +1,5 @@
-import { getRandomInt } from "@/lib/utils";
-import Phone from "../Phone";
+import { getRandomInt } from '@/lib/utils';
+import Phone from '../Phone';
 
 type Props = {
   imgSrc: string
@@ -12,7 +12,7 @@ const POSSIBLE_ANIMATION_DELAYS = [
   '0.3s',
   '0.4s',
   '0.5s',
-]
+];
 
 function getAnimationDelay() {
   return POSSIBLE_ANIMATION_DELAYS[getRandomInt(POSSIBLE_ANIMATION_DELAYS.length)];
