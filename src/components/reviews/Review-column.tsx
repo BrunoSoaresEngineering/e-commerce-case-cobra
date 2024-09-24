@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from "react";
-import Review from "./Review";
+import { useEffect, useRef, useState } from 'react';
+import Review from './Review';
 
 type ReviewColumnProps = {
   reviews: {
@@ -16,20 +16,20 @@ function ReviewColumn({ reviews, msPerPixel = 0 }: ReviewColumnProps) {
   const columnRef = useRef<HTMLDivElement | null>(null);
   const duration = `${columnHeight * msPerPixel}ms`;
 
-  useEffect(() => { 
+  useEffect(() => {
     if (!columnRef.current) {
-      return;
+      return () => {};
     }
 
     const resizeObserver = new window.ResizeObserver(() => {
       setColumnHeight(columnRef.current?.offsetHeight ?? 0);
-    })
+    });
 
     resizeObserver.observe(columnRef.current);
 
     return () => {
       resizeObserver.disconnect();
-    }
+    };
   }, []);
 
   return (
@@ -40,6 +40,7 @@ function ReviewColumn({ reviews, msPerPixel = 0 }: ReviewColumnProps) {
     >
       {reviews.concat(reviews).map((review, index) => (
         <Review
+          // eslint-disable-next-line react/no-array-index-key
           key={`${review.id}-${index}`}
           imgSrc={review.imgSrc}
         />
