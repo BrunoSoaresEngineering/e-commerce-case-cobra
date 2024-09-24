@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 type Props = {
   imgSrc: string,
-  className: string,
+  className?: string,
   dark?: boolean
 }
 
