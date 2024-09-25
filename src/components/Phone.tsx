@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 type Props = {
-  imgSrc: string,
+  imgSrc: string | StaticImageData,
   className?: string,
   dark?: boolean
 }

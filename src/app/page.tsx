@@ -1,17 +1,29 @@
+import Link from 'next/link';
+import Image from 'next/image';
 import MaxWidthWrapper from '@/components/Max-width-wrapper';
 import Phone from '@/components/Phone';
 import Underline from '@/components/Underline';
 import Reviews from '@/components/reviews/Reviews';
-import { Check } from 'lucide-react';
-import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Check } from 'lucide-react';
 import { formatNumber } from '@/lib/formatters';
 import Stars from './components/Stars';
 import snake2Image from '../../public/snake-2.png';
+import horseImage from '../../public/horse.jpg';
+import horsePhoneImage from '../../public/horse_phone.jpg';
+import arrowImage from '../../public/arrow.png';
 
 const mainFeatures = [
   'High-quality, durable material',
   '5 year print guarantee',
   'Modern iPhone models supported',
+];
+
+const productFeatures = [
+  'High-quality silicone material',
+  'Scratch and fingerprint resistant coating',
+  'Wireless charging compatible',
+  '5 year print warranty',
 ];
 
 const userPhotosHero = [
@@ -205,6 +217,49 @@ export default function Home() {
 
           <div>
             <Reviews reviews={reviews} />
+          </div>
+        </MaxWidthWrapper>
+      </section>
+
+      <section>
+        <MaxWidthWrapper className="py-24">
+          <h2 className="px-6 text-5xl font-bold text-center tracking-tight text-balance leading-tight md:text-6xl">
+            Upload your photo and get
+            {' '}
+            <span className="text-white bg-green-600">your own case</span>
+            {' '}
+            now!
+          </h2>
+          <div className="relative px-6 lg:px-8 mt-12 max-w-6xl flex flex-col md:grid grid-cols-2 items-center gap-40">
+            <Image
+              src={horseImage}
+              alt=""
+              className="h-80 md:h-full w-full max-w-sm md:justify-self-end object-cover shadow-2xl rounded-xl lg:rounded-2xl"
+            />
+            <Image
+              src={arrowImage}
+              alt=""
+              className="absolute rotate-90 md:rotate-0 top-[25rem] md:top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+            />
+            <Phone imgSrc={horsePhoneImage} className="w-60" />
+          </div>
+          <ul className="mx-auto mt-12 space-y-2 max-w-prose w-fit sm:text-lg">
+            {productFeatures.map((feature, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <li key={`product-feature-${index}`} className="w-fit">
+                <Check className="inline w-5 h-5 mr-1.5 text-green-600" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center">
+            <Button asChild size="lg">
+              <Link href="/configure/upload" className="mx-auto mt-8">
+                Create your case now
+                <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </MaxWidthWrapper>
       </section>
