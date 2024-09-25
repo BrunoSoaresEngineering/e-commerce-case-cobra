@@ -1,7 +1,9 @@
 'use client';
 
 import { useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import { getNumberOfGridColumns, splitArray } from '@/lib/utils';
 import ReviewColumn from './Review-column';
 
@@ -18,8 +20,12 @@ const MS_PER_PIXEL_ODD_COLUMNS = 10;
 const MS_PER_PIXEL_EVEN_COLUMNS = 15;
 
 function ReviewGrid({ reviews }: ReviewGridProps) {
-  const [columns, setColumns] = useState<Array<Array<Reviews>>>([]);
+  const [numColumns, setNumColumns] = useState<number>(0);
   const gridRef = useRef<HTMLDivElement | null>(null);
+  const columns = useMemo(
+    () => splitArray(reviews, numColumns),
+    [numColumns, reviews],
+  );
   const isInView = useInView(gridRef, {
     amount: 0.4,
     once: true,
@@ -31,10 +37,10 @@ function ReviewGrid({ reviews }: ReviewGridProps) {
     }
 
     const resizeObserver = new window.ResizeObserver(() => {
-      setColumns(splitArray(reviews, getNumberOfGridColumns(gridRef.current)));
+      setNumColumns(getNumberOfGridColumns(gridRef.current));
     });
 
-    resizeObserver.observe(gridRef.current);
+    resizeObserver.observe(document.body);
 
     return () => {
       resizeObserver.disconnect();
