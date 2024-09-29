@@ -9,7 +9,8 @@
   ],
   "parser": "@typescript-eslint/parser",
   "ignorePatterns": [
-    "/src/components/ui"
+    "/src/components/ui",
+    "/src/hooks/use-toast.ts"
   ],
   "rules": {
     "import/extensions": "off",
