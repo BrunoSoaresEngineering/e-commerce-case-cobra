@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import sharp from 'sharp';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,12 +37,4 @@ export function getNumberOfGridColumns(grid: HTMLDivElement | null) {
   const gridComputedStyle = window.getComputedStyle(grid);
 
   return gridComputedStyle.getPropertyValue('grid-template-columns').split(' ').length;
-}
-
-export async function getRemoteImageSize(imageUrl: string) {
-  const response = await fetch(imageUrl);
-  const buffer = await response.arrayBuffer();
-
-  const { width, height } = await sharp(buffer).metadata();
-  return { width, height };
 }

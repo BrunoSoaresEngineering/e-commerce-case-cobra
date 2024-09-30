@@ -1,5 +1,5 @@
 import { db } from '@/db/client';
-import { getRemoteImageSize } from '@/lib/utils';
+import { getRemoteImageSize } from '@/lib/images';
 import { createUploadthing, FileRouter } from 'uploadthing/next';
 import { z } from 'zod';
 
