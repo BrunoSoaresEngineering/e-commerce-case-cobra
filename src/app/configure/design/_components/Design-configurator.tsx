@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import ResizeHandle from './Resize-handle';
 import phoneTemplateImage from '../../../../../public/phone-template.png';
+import OptionsSelector from './Options-selector';
 
 type DesignConfiguratorProps = {
   configId: string,
@@ -26,15 +27,19 @@ type DesignConfiguratorProps = {
   imageDimensions: { width: number; height: number }
 };
 
-type ConfiguratorOption = {
+export type ConfiguratorOption = {
   color: (typeof availableOptions.COLORS)[number],
   model: (typeof availableOptions.MODELS)[number],
+  material: (typeof availableOptions.MATERIALS)[number],
+  finish: (typeof availableOptions.FINISHES)[number],
 }
 
 function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfiguratorProps) {
   const [options, setOptions] = useState<ConfiguratorOption>({
     color: availableOptions.COLORS[0],
     model: availableOptions.MODELS[availableOptions.MODELS.length - 1],
+    material: availableOptions.MATERIALS[0],
+    finish: availableOptions.FINISHES[0],
   });
 
   return (
@@ -166,6 +171,22 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+
+            <OptionsSelector
+              characteristic={{ name: 'material', options: availableOptions.MATERIALS }}
+              currentOption={options.material}
+              onChange={
+                (material) => setOptions((previousOption) => ({ ...previousOption, material }))
+              }
+            />
+
+            <OptionsSelector
+              characteristic={{ name: 'finish', options: availableOptions.FINISHES }}
+              currentOption={options.finish}
+              onChange={
+                (finish) => setOptions((previousOption) => ({ ...previousOption, finish }))
+              }
+            />
           </div>
         </ScrollArea>
       </div>
