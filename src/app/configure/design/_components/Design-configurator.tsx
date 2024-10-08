@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import NextImage from 'next/image';
 import { Rnd } from 'react-rnd';
 import { Radio, RadioGroup } from '@headlessui/react';
@@ -17,9 +17,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
+import { formatCurrency } from '@/lib/formatters';
+import { BASE_PRICE } from '@/config/products';
 import ResizeHandle from './Resize-handle';
 import phoneTemplateImage from '../../../../../public/phone-template.png';
 import OptionsSelector from './Options-selector';
+import SaveButton from './Save-button';
 
 type DesignConfiguratorProps = {
   configId: string,
@@ -42,11 +45,27 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
     finish: availableOptions.FINISHES[0],
   });
 
+  const [configurationImagePosition, setConfigurationImagePosition] = useState({
+    left: 150,
+    top: 205,
+  });
+  const [configurationImageDimensions, setConfigurationImageDimensions] = useState({
+    width: imageDimensions.width / 5,
+    height: imageDimensions.height / 5,
+  });
+
+  const phoneCaseRef = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="mt-20 grid grid-cols-1">
-      <div className="relative h-[37.5rem] w-full p-12 overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center rounded-lg">
+      <div
+        ref={containerRef}
+        className="relative h-[37.5rem] w-full p-12 overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center rounded-lg"
+      >
         <div className="relative w-60 pointer-events-none">
           <NextImage
+            ref={phoneCaseRef}
             src={phoneTemplateImage}
             alt="phone base image"
             className="relative pointer-events-none select-none z-50"
@@ -66,10 +85,9 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
 
         <Rnd
           default={{
-            x: 150,
-            y: 205,
-            width: imageDimensions.width / 5,
-            height: imageDimensions.height / 5,
+            x: configurationImagePosition.left,
+            y: configurationImagePosition.top,
+            ...configurationImageDimensions,
           }}
           lockAspectRatio
           resizeHandleComponent={{
@@ -78,6 +96,14 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
             bottomLeft: <ResizeHandle />,
             bottomRight: <ResizeHandle />,
           }}
+          onResizeStop={(_, __, ref, ___, { x, y }) => {
+            setConfigurationImageDimensions({
+              height: parseInt(ref.style.height, 10),
+              width: parseInt(ref.style.width, 10),
+            });
+            setConfigurationImagePosition({ left: x, top: y });
+          }}
+          onDragStop={(_, data) => setConfigurationImagePosition({ left: data.x, top: data.y })}
         >
           <div className="relative w-full h-full">
             <NextImage
@@ -189,6 +215,26 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
             />
           </div>
         </ScrollArea>
+
+        <div className="w-full px-8 h-16 bg-white">
+          <div className="h-px w-full bg-zinc-200" />
+
+          <div className="flex items-center w-full gap-6">
+            <p className="font-medium whitespace-nowrap">
+              {formatCurrency((BASE_PRICE + options.finish.price + options.material.price) / 100)}
+            </p>
+            <SaveButton
+              phoneCaseRef={phoneCaseRef}
+              containerRef={containerRef}
+              configurationImage={{
+                position: configurationImagePosition,
+                dimensions: configurationImageDimensions,
+                configId,
+                src: imageUrl,
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
