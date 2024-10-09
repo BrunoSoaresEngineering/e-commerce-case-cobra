@@ -58,10 +58,15 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="mt-20 grid grid-cols-1">
+    <div className="mt-20 mb-20 pb-20 grid grid-cols-1 lg:grid-cols-3">
       <div
         ref={containerRef}
-        className="relative h-[37.5rem] w-full p-12 overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center rounded-lg"
+        className={cn(
+          'relative h-[37.5rem] w-full p-12 overflow-hidden flex items-center justify-center',
+          'max-w-4xl col-span-2',
+          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
+          'border-2 border-dashed border-gray-300  rounded-lg',
+        )}
       >
         <div className="relative w-60 pointer-events-none">
           <NextImage
@@ -72,7 +77,10 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
           />
 
           {/* background of config area */}
-          <div className="absolute z-40 inset-0 rounded-[32px] left-[3px] top-px right-[3px] bottom-px shadow-[0_0_0_9999px_rgba(229,231,235,0.6)]" />
+          <div className={cn(
+            'absolute z-40 inset-0 rounded-[32px] left-[3px] top-px right-[3px] bottom-px',
+            'shadow-[0_0_0_9999px_rgba(229,231,235,0.6)]'
+          )} />
 
           {/* case color layer */}
           <div
@@ -104,6 +112,7 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
             setConfigurationImagePosition({ left: x, top: y });
           }}
           onDragStop={(_, data) => setConfigurationImagePosition({ left: data.x, top: data.y })}
+          className="border-[3px] border-primary"
         >
           <div className="relative w-full h-full">
             <NextImage
@@ -133,7 +142,7 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
                 {' '}
                 {options.color.label}
               </Label>
-              <div className="mt-3 flex items-center space-x-3">
+              <div className="mt-3 ml-1 flex items-center space-x-3">
                 {availableOptions.COLORS.map((color) => (
                   <Radio
                     key={color.label}
@@ -219,7 +228,7 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
         <div className="w-full px-8 h-16 bg-white">
           <div className="h-px w-full bg-zinc-200" />
 
-          <div className="flex items-center w-full gap-6">
+          <div className="flex items-center w-full h-full gap-6">
             <p className="font-medium whitespace-nowrap">
               {formatCurrency((BASE_PRICE + options.finish.price + options.material.price) / 100)}
             </p>

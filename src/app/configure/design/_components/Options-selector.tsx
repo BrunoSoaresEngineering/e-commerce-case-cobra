@@ -38,7 +38,8 @@ function OptionsSelector({ characteristic, currentOption, onChange }: Props) {
             key={option.value}
             value={option}
             className={({ checked }) => cn(
-              'px-6 py-4 flex justify-between rounded-lg bg-white border-2 border-zinc-200',
+              'px-6 py-4 flex flex-col sm:flex-row justify-between',
+              'rounded-lg bg-white border-2 border-zinc-200',
               'shadow-sm outline-none focus:outline-none, ring-0, focus:ring-0',
               { 'border-primary': checked },
             )}
@@ -54,7 +55,7 @@ function OptionsSelector({ characteristic, currentOption, onChange }: Props) {
               )}
             </div>
 
-            <Description as="span" className="text-sm font-medium text-gray-900">
+            <Description as="span" className="mt-2 sm:mt-0 sm:ml-4 text-sm font-medium text-gray-900">
               {formatCurrency(option.price / 100)}
             </Description>
           </Radio>
