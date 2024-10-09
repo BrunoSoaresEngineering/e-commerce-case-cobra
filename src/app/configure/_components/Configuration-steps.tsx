@@ -11,14 +11,13 @@ const steps = [
   {
     title: 'Step 1: Add image',
     description: 'Choose an image for your case',
-    url: '/upload2',
+    url: '/upload',
     image: image1,
   },
   {
     title: 'Step 2: Customize design',
     description: 'Make the case yours',
-    // url: '/design',
-    url: '/upload',
+    url: '/design',
     image: image2,
   },
   {
