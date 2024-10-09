@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { db } from '@/db/client';
 import DesignConfigurator from './_components/Design-configurator';
+import ConfiguratorContext from './_components/Configurator-context';
 
 type DesignPageProps = {
   searchParams: {
@@ -30,11 +31,14 @@ async function DesignPage({ searchParams }: DesignPageProps) {
   }
 
   return (
-    <DesignConfigurator
-      configId={configuration.id}
-      imageUrl={configuration.imageUrl}
+    <ConfiguratorContext
       imageDimensions={{ height: configuration.height, width: configuration.width }}
-    />
+    >
+      <DesignConfigurator
+        configId={configuration.id}
+        imageUrl={configuration.imageUrl}
+      />
+    </ConfiguratorContext>
   );
 }
 export default DesignPage;

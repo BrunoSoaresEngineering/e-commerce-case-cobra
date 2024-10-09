@@ -4,13 +4,12 @@ import { useToast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
 import { ArrowRight } from 'lucide-react';
 import image from '../_lib/image';
+import { useConfigurationImageContext } from './Configurator-context';
 
 type SaveButtonProps = {
   phoneCaseRef: RefObject<HTMLDivElement>,
   containerRef: RefObject<HTMLDivElement>,
   configurationImage: {
-    position: {left: number, top: number},
-    dimensions: {width: number, height: number},
     src: string,
     configId: string,
   }
@@ -19,6 +18,11 @@ type SaveButtonProps = {
 function SaveButton({ phoneCaseRef, containerRef, configurationImage }: SaveButtonProps) {
   const { startUpload } = useUploadThing('imageUploader');
   const { toast } = useToast();
+
+  const {
+    dimensions: configurationImageDimensions,
+    position: configurationImagePosition,
+  } = useConfigurationImageContext();
 
   async function save() {
     try {
@@ -29,13 +33,13 @@ function SaveButton({ phoneCaseRef, containerRef, configurationImage }: SaveButt
       const imageCoordinates = image.getCoordinatesInConfigurator(
         phoneCaseBoundingRect,
         containerBoundingRect,
-        configurationImage.position,
+        configurationImagePosition,
       );
 
       const userImage = {
         imageElement: await image.loadInImgElement(configurationImage.src),
         coordinates: imageCoordinates,
-        dimensions: configurationImage.dimensions,
+        dimensions: configurationImageDimensions,
       };
 
       const canvas = image.drawInNewCanvas(phoneCaseBoundingRect, userImage);

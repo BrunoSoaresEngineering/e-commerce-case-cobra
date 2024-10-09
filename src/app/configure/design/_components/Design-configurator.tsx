@@ -1,14 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import NextImage from 'next/image';
-import { Rnd } from 'react-rnd';
+import { useRef } from 'react';
 import { Radio, RadioGroup } from '@headlessui/react';
 import { Label } from '@/components/ui/label';
-
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { availableOptions } from '@/validators/configuration-validator';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,110 +15,36 @@ import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { formatCurrency } from '@/lib/formatters';
 import { BASE_PRICE } from '@/config/products';
-import ResizeHandle from './Resize-handle';
-import phoneTemplateImage from '../../../../../public/phone-template.png';
+import { availableOptions } from '@/validators/configuration-validator';
 import OptionsSelector from './Options-selector';
 import SaveButton from './Save-button';
+import CaseConfiguratorCanvas from './Case-configurator-canvas';
+import { useCurrentOptionsContext } from './Configurator-context';
 
 type DesignConfiguratorProps = {
   configId: string,
   imageUrl: string,
-  imageDimensions: { width: number; height: number }
 };
 
-export type ConfiguratorOption = {
-  color: (typeof availableOptions.COLORS)[number],
-  model: (typeof availableOptions.MODELS)[number],
-  material: (typeof availableOptions.MATERIALS)[number],
-  finish: (typeof availableOptions.FINISHES)[number],
-}
-
-function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfiguratorProps) {
-  const [options, setOptions] = useState<ConfiguratorOption>({
-    color: availableOptions.COLORS[0],
-    model: availableOptions.MODELS[availableOptions.MODELS.length - 1],
-    material: availableOptions.MATERIALS[0],
-    finish: availableOptions.FINISHES[0],
-  });
-
-  const [configurationImagePosition, setConfigurationImagePosition] = useState({
-    left: 150,
-    top: 205,
-  });
-  const [configurationImageDimensions, setConfigurationImageDimensions] = useState({
-    width: imageDimensions.width / 5,
-    height: imageDimensions.height / 5,
-  });
-
+function DesignConfigurator({ configId, imageUrl }: DesignConfiguratorProps) {
   const phoneCaseRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const optionsContext = useCurrentOptionsContext();
+
+  const calculateGrandTotal = () => {
+    const { finish, material } = optionsContext.currentOptions;
+    return formatCurrency((BASE_PRICE + finish.price + material.price) / 100);
+  };
+
   return (
     <div className="mt-20 mb-20 pb-20 grid grid-cols-1 lg:grid-cols-3">
-      <div
-        ref={containerRef}
-        className={cn(
-          'relative h-[37.5rem] w-full p-12 overflow-hidden flex items-center justify-center',
-          'max-w-4xl col-span-2',
-          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
-          'border-2 border-dashed border-gray-300  rounded-lg',
-        )}
-      >
-        <div className="relative w-60 pointer-events-none">
-          <NextImage
-            ref={phoneCaseRef}
-            src={phoneTemplateImage}
-            alt="phone base image"
-            className="relative pointer-events-none select-none z-50"
-          />
 
-          {/* background of config area */}
-          <div className={cn(
-            'absolute z-40 inset-0 rounded-[32px] left-[3px] top-px right-[3px] bottom-px',
-            'shadow-[0_0_0_9999px_rgba(229,231,235,0.6)]'
-          )} />
-
-          {/* case color layer */}
-          <div
-            className={cn(
-              'absolute inset-0 rounded-[32px] left-[3px] top-px right-[3px] bottom-px',
-              `bg-${options.color.tw}`,
-            )}
-          />
-        </div>
-
-        <Rnd
-          default={{
-            x: configurationImagePosition.left,
-            y: configurationImagePosition.top,
-            ...configurationImageDimensions,
-          }}
-          lockAspectRatio
-          resizeHandleComponent={{
-            topRight: <ResizeHandle />,
-            topLeft: <ResizeHandle />,
-            bottomLeft: <ResizeHandle />,
-            bottomRight: <ResizeHandle />,
-          }}
-          onResizeStop={(_, __, ref, ___, { x, y }) => {
-            setConfigurationImageDimensions({
-              height: parseInt(ref.style.height, 10),
-              width: parseInt(ref.style.width, 10),
-            });
-            setConfigurationImagePosition({ left: x, top: y });
-          }}
-          onDragStop={(_, data) => setConfigurationImagePosition({ left: data.x, top: data.y })}
-          className="border-[3px] border-primary"
-        >
-          <div className="relative w-full h-full">
-            <NextImage
-              src={imageUrl}
-              alt="your image"
-              fill
-            />
-          </div>
-        </Rnd>
-      </div>
+      <CaseConfiguratorCanvas
+        phoneCaseRef={phoneCaseRef}
+        containerRef={containerRef}
+        imageUrl={imageUrl}
+      />
 
       <div className="h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white">
         <ScrollArea className="px-8 pb-12 pt-8 flex-1 overflow-auto">
@@ -131,8 +53,8 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
 
           <div className="mt-4 flex flex-col justify-between gap-6">
             <RadioGroup
-              value={options.color}
-              onChange={(value) => setOptions((previousOptions) => ({
+              value={optionsContext.currentOptions.color}
+              onChange={(value) => optionsContext.setCurrentOptions((previousOptions) => ({
                 ...previousOptions,
                 color: value,
               }))}
@@ -140,7 +62,7 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
               <Label>
                 Color:
                 {' '}
-                {options.color.label}
+                {optionsContext.currentOptions.color.label}
               </Label>
               <div className="mt-3 ml-1 flex items-center space-x-3">
                 {availableOptions.COLORS.map((color) => (
@@ -176,19 +98,21 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
                     role="combobox"
                     className="w-full justify-between"
                   >
-                    {options.model.label}
+                    {optionsContext.currentOptions.model.label}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {availableOptions.MODELS.map((model) => {
-                    const isSelected = model.label === options.model.label;
+                    const isSelected = model.label === optionsContext.currentOptions.model.label;
 
                     return (
                       <DropdownMenuItem
                         key={model.label}
                         onClick={
-                          () => setOptions((previousOption) => ({ ...previousOption, model }))
+                          () => optionsContext.setCurrentOptions(
+                            (previousOption) => ({ ...previousOption, model }),
+                          )
                         }
                         className={cn(
                           'flex gap-1 items-center p-1.5 text-sm',
@@ -209,17 +133,21 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
 
             <OptionsSelector
               characteristic={{ name: 'material', options: availableOptions.MATERIALS }}
-              currentOption={options.material}
+              currentOption={optionsContext.currentOptions.material}
               onChange={
-                (material) => setOptions((previousOption) => ({ ...previousOption, material }))
+                (material) => optionsContext.setCurrentOptions(
+                  (previousOption) => ({ ...previousOption, material }),
+                )
               }
             />
 
             <OptionsSelector
               characteristic={{ name: 'finish', options: availableOptions.FINISHES }}
-              currentOption={options.finish}
+              currentOption={optionsContext.currentOptions.finish}
               onChange={
-                (finish) => setOptions((previousOption) => ({ ...previousOption, finish }))
+                (finish) => optionsContext.setCurrentOptions(
+                  (previousOption) => ({ ...previousOption, finish }),
+                )
               }
             />
           </div>
@@ -230,14 +158,12 @@ function DesignConfigurator({ configId, imageUrl, imageDimensions }: DesignConfi
 
           <div className="flex items-center w-full h-full gap-6">
             <p className="font-medium whitespace-nowrap">
-              {formatCurrency((BASE_PRICE + options.finish.price + options.material.price) / 100)}
+              {calculateGrandTotal()}
             </p>
             <SaveButton
               phoneCaseRef={phoneCaseRef}
               containerRef={containerRef}
               configurationImage={{
-                position: configurationImagePosition,
-                dimensions: configurationImageDimensions,
                 configId,
                 src: imageUrl,
               }}
