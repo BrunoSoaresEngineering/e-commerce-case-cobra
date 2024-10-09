@@ -21,7 +21,7 @@ type Props = {
     options: readonly Option[],
   }
   currentOption: Option,
-  onChange: (changedCharacteristic: any) => void
+  onChange: (value: never) => void
 };
 
 function OptionsSelector({ characteristic, currentOption, onChange }: Props) {
