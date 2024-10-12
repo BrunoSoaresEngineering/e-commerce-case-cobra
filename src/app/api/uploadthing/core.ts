@@ -8,9 +8,9 @@ const f = createUploadthing();
 const validationSchema = z.object({ configId: z.string().optional() });
 
 type HandleOnUploadCompleteProps = {
-  metadata?: {
-    input?: {
-      configId: string,
+  metadata: {
+    input: {
+      configId?: string,
     },
   },
   file: {
@@ -19,7 +19,7 @@ type HandleOnUploadCompleteProps = {
 }
 
 async function handleOnUploadComplete({ metadata, file }: HandleOnUploadCompleteProps) {
-  const configId = metadata?.input?.configId;
+  const { configId } = metadata.input;
 
   if (!configId) {
     const { width, height } = await getRemoteImageSize(file.url);
@@ -50,6 +50,7 @@ async function handleOnUploadComplete({ metadata, file }: HandleOnUploadComplete
 export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: '4MB' } })
     .input(validationSchema)
+    .middleware(async ({ input }) => ({ input }))
     .onUploadComplete(handleOnUploadComplete),
 } satisfies FileRouter;
 
