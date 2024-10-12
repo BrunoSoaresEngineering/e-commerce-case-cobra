@@ -17,9 +17,8 @@ function ResizeHandle() {
 type Props = {
   phoneCaseRef: RefObject<HTMLImageElement>
   containerRef: RefObject<HTMLDivElement>
-  imageUrl: string
 }
-function CaseConfiguratorCanvas({ phoneCaseRef, containerRef, imageUrl }: Props) {
+function CaseConfiguratorCanvas({ phoneCaseRef, containerRef }: Props) {
   const configurationImage = useConfigurationImageContext();
   const optionsContext = useCurrentOptionsContext();
 
@@ -82,7 +81,7 @@ function CaseConfiguratorCanvas({ phoneCaseRef, containerRef, imageUrl }: Props)
       >
         <div className="relative w-full h-full">
           <Image
-            src={imageUrl}
+            src={configurationImage.src}
             alt="your image"
             fill
           />

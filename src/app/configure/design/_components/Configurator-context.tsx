@@ -13,7 +13,8 @@ import { availableOptions } from '@/validators/configuration-validator';
 
 type ConfiguratorContextProps = {
   children: ReactElement,
-  imageDimensions: { width: number; height: number }
+  imageDimensions: { width: number; height: number },
+  imageUrl: string,
 };
 
 type Position = { left: number, top: number };
@@ -24,6 +25,7 @@ type ConfigurationImageContext = {
   setPosition: Dispatch<SetStateAction<Position>>,
   dimensions: Dimensions,
   setDimensions: Dispatch<SetStateAction<Dimensions>>,
+  src: string,
 };
 
 type ConfiguratorOptions = {
@@ -42,6 +44,7 @@ const defaultConfigurationImageContext = {
   setPosition: () => {},
   dimensions: { height: 0, width: 0 },
   setDimensions: () => {},
+  src: '',
 };
 const ConfigurationImageContext = createContext<ConfigurationImageContext>(
   defaultConfigurationImageContext,
@@ -67,7 +70,7 @@ function useCurrentOptionsContext() {
   return useContext(CurrentOptionsContext);
 }
 
-function ConfiguratorContext({ children, imageDimensions }: ConfiguratorContextProps) {
+function ConfiguratorContext({ children, imageDimensions, imageUrl }: ConfiguratorContextProps) {
   const [position, setPosition] = useState<Position>(defaultConfigurationImageContext.position);
 
   const [dimensions, setDimensions] = useState<Dimensions>({
@@ -82,7 +85,8 @@ function ConfiguratorContext({ children, imageDimensions }: ConfiguratorContextP
     setPosition,
     dimensions,
     setDimensions,
-  }), [position, dimensions]);
+    src: imageUrl,
+  }), [position, dimensions, imageUrl]);
 
   const currentOptionsCtxValue = useMemo(() => ({
     currentOptions,
@@ -102,6 +106,6 @@ export default ConfiguratorContext;
 export {
   useConfigurationImageContext,
   useCurrentOptionsContext,
-  ConfiguratorContext,
   type ConfiguratorOptions,
+  type ConfigurationImageContext,
 };

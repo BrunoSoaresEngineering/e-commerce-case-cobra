@@ -21,12 +21,9 @@ import { useCurrentOptionsContext } from './Configurator-context';
 type Props = {
   phoneCaseRef: RefObject<HTMLImageElement>
   containerRef: RefObject<HTMLDivElement>
-  configurationImage: {
-    src: string
-    configId: string
-  }
+  configId: string
 }
-function CaseConfiguratorOptions({ phoneCaseRef, containerRef, configurationImage }: Props) {
+function CaseConfiguratorOptions({ phoneCaseRef, containerRef, configId }: Props) {
   const optionsContext = useCurrentOptionsContext();
 
   const calculateGrandTotal = () => {
@@ -150,9 +147,8 @@ function CaseConfiguratorOptions({ phoneCaseRef, containerRef, configurationImag
             {calculateGrandTotal()}
           </p>
           <SaveButton
-            phoneCaseRef={phoneCaseRef}
-            containerRef={containerRef}
-            configurationImage={configurationImage}
+            refs={{ phoneCaseRef, containerRef }}
+            configId={configId}
           />
         </div>
       </div>

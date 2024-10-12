@@ -6,10 +6,9 @@ import CaseConfiguratorOptions from './Case-configurator-options';
 
 type DesignConfiguratorProps = {
   configId: string,
-  imageUrl: string,
 };
 
-function DesignConfigurator({ configId, imageUrl }: DesignConfiguratorProps) {
+function DesignConfigurator({ configId }: DesignConfiguratorProps) {
   const phoneCaseRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -19,16 +18,12 @@ function DesignConfigurator({ configId, imageUrl }: DesignConfiguratorProps) {
       <CaseConfiguratorCanvas
         phoneCaseRef={phoneCaseRef}
         containerRef={containerRef}
-        imageUrl={imageUrl}
       />
 
       <CaseConfiguratorOptions
         phoneCaseRef={phoneCaseRef}
         containerRef={containerRef}
-        configurationImage={{
-          configId,
-          src: imageUrl,
-        }}
+        configId={configId}
       />
     </div>
   );

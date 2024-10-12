@@ -9,7 +9,7 @@ export const COLORS = [
 export const MODELS = [
   {
     label: 'iPhone X',
-    value: 'iphonex',
+    value: 'iphoneX',
   },
   {
     label: 'iPhone 11',

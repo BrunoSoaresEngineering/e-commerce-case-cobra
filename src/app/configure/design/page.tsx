@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { db } from '@/db/client';
+import Providers from '@/components/Providers';
 import DesignConfigurator from './_components/Design-configurator';
 import ConfiguratorContext from './_components/Configurator-context';
 
@@ -33,11 +34,11 @@ async function DesignPage({ searchParams }: DesignPageProps) {
   return (
     <ConfiguratorContext
       imageDimensions={{ height: configuration.height, width: configuration.width }}
+      imageUrl={configuration.imageUrl}
     >
-      <DesignConfigurator
-        configId={configuration.id}
-        imageUrl={configuration.imageUrl}
-      />
+      <Providers>
+        <DesignConfigurator configId={configuration.id} />
+      </Providers>
     </ConfiguratorContext>
   );
 }
