@@ -82,7 +82,7 @@ const reviews = [
 
 export default function Home() {
   return (
-    <main className="bg-slate-50">
+    <div className="bg-slate-50">
       <section>
         <MaxWidthWrapper className="pb-24 pt-10 lg:pt-24 xl:pt-32 lg:grid lg:grid-cols-3 lg:gap-x-0 xl:gap-x-8">
           <div className="relative mx-auto px-6 lg:px-0 lg:pt-4 text-center lg:text-left flex flex-col items-center lg:items-start col-span-2">
@@ -263,6 +263,6 @@ export default function Home() {
           </div>
         </MaxWidthWrapper>
       </section>
-    </main>
+    </div>
   );
 }

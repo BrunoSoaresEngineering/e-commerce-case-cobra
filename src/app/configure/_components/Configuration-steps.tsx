@@ -32,7 +32,7 @@ function ConfigurationSteps() {
   const currentPath = usePathname();
 
   return (
-    <ol className="lg:flex lg:border-l lg:border-r lg:border-gray-200">
+    <ol className="lg:flex lg:border-l lg:border-r lg:border-gray-200 bg-white">
       {steps.map((step, currentIndex, arraySteps) => {
         const isCurrentStep = currentPath.endsWith(step.url);
 

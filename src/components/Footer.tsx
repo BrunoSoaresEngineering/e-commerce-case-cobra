@@ -4,7 +4,7 @@ import MaxWidthWrapper from './Max-width-wrapper';
 
 function Footer() {
   return (
-    <footer>
+    <footer className="bg-white">
       <MaxWidthWrapper>
         <div
           className="h-20 bg-white flex flex-col md:flex-row justify-center md:justify-between items-center gap-2 border-t border-gray-200"

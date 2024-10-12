@@ -22,9 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${recursive.className} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+
+        <main className="grainy-light">
+          <Navbar />
+          {children}
+          <Footer />
+        </main>
 
         <Toaster />
       </body>
