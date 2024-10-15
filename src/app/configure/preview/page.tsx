@@ -1,7 +1,7 @@
-import { ArrowRight, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import Providers from '@/components/Providers';
 import Phone from '@/components/Phone';
-import { Button } from '@/components/ui/button';
 import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products';
 import { db } from '@/db/client';
 import { formatCurrency } from '@/lib/formatters';
@@ -11,6 +11,7 @@ import {
   MATERIALS,
   MODELS,
 } from '@/validators/configuration-validator';
+import CheckoutButton from './_components/Check-out-button';
 
 type PreviewPageProps = {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -129,10 +130,9 @@ async function PreviewPage({ searchParams }: PreviewPageProps) {
             </div>
 
             <div className="flex justify-end mt-8 mb-12">
-              <Button className="px-4 sm:px-6 lg:px-8">
-                Check out
-                <ArrowRight className="inline ml-1.5 h-4 w-4" />
-              </Button>
+              <Providers>
+                <CheckoutButton configuration={configuration} totalPrice={grandTotal} />
+              </Providers>
             </div>
           </div>
         </div>
