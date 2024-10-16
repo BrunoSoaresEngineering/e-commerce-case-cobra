@@ -13,28 +13,12 @@ type CreateCheckoutSessionProps = {
 }
 
 async function createCheckoutSession({ configuration, totalPrice }: CreateCheckoutSessionProps) {
-  const currentUser = await getKindeServerSession().getUser();
-  if (!currentUser || !currentUser.id || !currentUser.email) {
-    throw new Error('Invalid user data from authentication provider.');
-  }
-
-  let user = await db.user.findUnique({
-    where: { id: currentUser.id },
-  });
-
-  if (!user) {
-    user = await db.user.create({
-      data: {
-        id: currentUser.id,
-        email: currentUser.email,
-      },
-    });
-  }
+  const user = await getKindeServerSession().getUser();
 
   let order = await db.order.findFirst({
     where: {
       configurationId: configuration.id,
-      userId: currentUser.id,
+      userId: user.id,
     },
   });
 
