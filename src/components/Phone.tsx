@@ -9,7 +9,7 @@ type Props = {
 
 function Phone({ imgSrc, className, dark = false }: Props) {
   return (
-    <div className={cn('relative z-50 overflow-hidden pointer-events-none select-none', className)}>
+    <div className={cn('relative z-30 overflow-hidden pointer-events-none select-none', className)}>
       <Image
         src={
           dark

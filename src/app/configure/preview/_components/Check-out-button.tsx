@@ -4,19 +4,25 @@ import { createCheckoutSession } from '@/app/actions/check-out';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation } from '@tanstack/react-query';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useLoginModalContext } from '@/components/login-modal/Login-modal-context';
 
-type Props = {
+type CheckoutButtonProps = {
   configuration: {
     id: string,
     imageUrl: string,
   },
   totalPrice: number,
 }
-function CheckoutButton({ configuration, totalPrice }: Props) {
+
+function CheckoutButton({ configuration, totalPrice }: CheckoutButtonProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const { setIsLoginModalOpen } = useLoginModalContext();
+
+  const { isAuthenticated } = useKindeBrowserClient();
 
   const { mutate: createPaymentSession } = useMutation({
     mutationKey: ['checkout'],
@@ -34,10 +40,19 @@ function CheckoutButton({ configuration, totalPrice }: Props) {
     }),
   });
 
+  const handleCheckout = () => {
+    if (isAuthenticated) {
+      createPaymentSession({ configuration, totalPrice });
+      return;
+    }
+    localStorage.setItem('configurationId', configuration.id);
+    setIsLoginModalOpen(true);
+  };
+
   return (
     <Button
       className="px-4 sm:px-6 lg:px-8"
-      onClick={() => createPaymentSession({ configuration, totalPrice })}
+      onClick={handleCheckout}
     >
       Check out
       <ArrowRight className="inline ml-1.5 h-4 w-4" />

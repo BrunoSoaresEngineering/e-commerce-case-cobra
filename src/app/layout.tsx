@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import LoginModalContext from '@/components/login-modal/Login-modal-context';
+import LoginModal from '@/components/login-modal/Login-modal';
 
 const recursive = Recursive({
   subsets: ['latin'],
@@ -22,10 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${recursive.className} antialiased`}>
-
         <main className="grainy-light">
           <Navbar />
-          {children}
+
+          <LoginModalContext>
+            <LoginModal />
+            {children}
+          </LoginModalContext>
+
           <Footer />
         </main>
 
