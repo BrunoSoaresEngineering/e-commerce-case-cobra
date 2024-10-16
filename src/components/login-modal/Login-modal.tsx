@@ -37,10 +37,10 @@ function LoginModal() {
 
           <div className="grid grid-cols-2 gap-6">
             <Button asChild size="lg" variant="outline">
-              <RegisterLink>Sign Up</RegisterLink>
+              <LoginLink>Login</LoginLink>
             </Button>
             <Button asChild size="lg" variant="default">
-              <LoginLink>Login</LoginLink>
+              <RegisterLink>Sign Up</RegisterLink>
             </Button>
           </div>
         </DialogContent>
