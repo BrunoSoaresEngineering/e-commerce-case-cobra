@@ -24,13 +24,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${recursive.className} antialiased`}>
-        <main className="grainy-light">
+        <main className="grainy-light min-h-screen flex flex-col justify-between">
           <Navbar />
 
-          <LoginModalContext>
-            <LoginModal />
-            {children}
-          </LoginModalContext>
+          <div className="flex-1">
+            <LoginModalContext>
+              <LoginModal />
+              {children}
+            </LoginModalContext>
+          </div>
 
           <Footer />
         </main>
