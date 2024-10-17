@@ -48,7 +48,7 @@ async function createCheckoutSession({ configuration, totalPrice }: CreateChecko
     shipping_address_collection: { allowed_countries: ['DE', 'US', 'PT'] },
     metadata: {
       userId: user.id,
-      order: order.id,
+      orderId: order.id,
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
   });

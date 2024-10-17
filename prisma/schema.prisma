@@ -57,17 +57,47 @@ model User {
   updatedAt         DateTime      @updatedAt
 }
 
-model Order {
+model ShippingAddress {
   id                String        @id @default(cuid())
+  name              String
+  street            String
+  city              String
+  postalCode        String
+  country           String
+  state             String?
+  phoneNumber       String?
+  orders            Order[]
+}
+
+model BillingAddress {
+  id                String        @id @default(cuid())
+  name              String
+  street            String
+  city              String
+  postalCode        String
+  country           String
+  state             String?
+  phoneNumber       String?
+  orders            Order[]
+}
+
+model Order {
+  id                String            @id @default(cuid())
   amount            Float
-  isPaid            Boolean       @default(false)
+  isPaid            Boolean           @default(false)
   
   configurationId   String
-  configuration     Configuration @relation(fields: [configurationId], references: [id])
+  configuration     Configuration     @relation(fields: [configurationId], references: [id])
 
   userId            String
-  user              User          @relation(fields: [userId], references: [id])
+  user              User              @relation(fields: [userId], references: [id])
 
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  shippingAddressId String?
+  shippingAddress   ShippingAddress?  @relation(fields: [shippingAddressId], references: [id])
+
+  billingAddressId  String?
+  billingAddress    BillingAddress?   @relation(fields: [billingAddressId], references: [id])
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 }
