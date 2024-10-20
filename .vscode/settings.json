@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "auth",
     "home",
-    "configurator"
+    "configurator",
+    "thankyou"
   ]
 }
