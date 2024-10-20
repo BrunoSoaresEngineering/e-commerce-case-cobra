@@ -34,6 +34,12 @@ enum CaseFinish {
   textured
 }
 
+enum OrderStatus {
+  fulfilled
+  shipped
+  awaiting_shipment
+}
+
 model Configuration {
   id                String        @id @default(cuid())
   imageUrl          String
@@ -85,6 +91,7 @@ model Order {
   id                String            @id @default(cuid())
   amount            Float
   isPaid            Boolean           @default(false)
+  status            OrderStatus       @default(awaiting_shipment)
   
   configurationId   String
   configuration     Configuration     @relation(fields: [configurationId], references: [id])

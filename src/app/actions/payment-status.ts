@@ -2,7 +2,6 @@
 
 import { db } from '@/db/client';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { Order } from '@prisma/client';
 
 export async function getPaymentStatus({ orderId }: { orderId: string }) {
   const user = await getKindeServerSession().getUser();
@@ -11,14 +10,13 @@ export async function getPaymentStatus({ orderId }: { orderId: string }) {
     throw new Error('You need to be logged in.');
   }
 
-  const order = await new Promise<Order | null>((resolve) => {
-    setTimeout(async () => resolve(await db.order.findFirst({
-      where: { id: orderId, userId: user.id },
-      include: {
-        billingAddress: true,
-        shippingAddress: true,
-      },
-    })), 2000);
+  const order = await db.order.findFirst({
+    where: { id: orderId, userId: user.id },
+    include: {
+      billingAddress: true,
+      shippingAddress: true,
+      configuration: true,
+    },
   });
 
   if (!order) {

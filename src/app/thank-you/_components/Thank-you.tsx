@@ -4,6 +4,7 @@ import { getPaymentStatus } from '@/app/actions/payment-status';
 import WaitingComponent from '@/components/Waiting-component';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import PaymentConfirmed from './Payment-confirmed';
 
 function ThankYou() {
   const searchParams = useSearchParams();
@@ -21,7 +22,7 @@ function ThankYou() {
   }
 
   if (data.isPaid === true) {
-    return <div>GOT IT</div>;
+    return <PaymentConfirmed order={data} />;
   }
 
   return <WaitingComponent text="Verifying your payment..." title="This might take a while." />;
