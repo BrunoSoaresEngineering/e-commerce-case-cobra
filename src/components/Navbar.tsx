@@ -27,7 +27,7 @@ async function Navbar() {
                 </Button>
                 {isAdmin && (
                   <Button asChild size="sm" variant="ghost">
-                    <Link href="/">Dashboard</Link>
+                    <Link href="/dashboard">Dashboard</Link>
                   </Button>
                 )}
                 <Button asChild size="sm" className="hidden sm:flex items-center gap-1">

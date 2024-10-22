@@ -3,6 +3,7 @@
     "auth",
     "home",
     "configurator",
-    "thankyou"
+    "thankyou",
+    "admin"
   ]
 }
