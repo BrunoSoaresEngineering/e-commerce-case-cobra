@@ -6,6 +6,10 @@
 .pnp.js
 .yarn/install-state.gz
 
+# email previewer
+/email-previewer/*
+!/email-previewer/package.json
+
 # testing
 /coverage
 

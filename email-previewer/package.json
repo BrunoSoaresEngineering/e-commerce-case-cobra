@@ -1,0 +1,14 @@
+{
+  "name": "email-previewer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "email": "cp ../.env ./node_modules/react-email && email dev --dir ../src/email --port 3050"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "react-email": "^3.0.1"
+  }
+}
