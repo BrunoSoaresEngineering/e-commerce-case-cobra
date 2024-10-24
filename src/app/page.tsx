@@ -7,7 +7,7 @@ import Reviews from '@/components/reviews/Reviews';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Check } from 'lucide-react';
 import { formatNumber } from '@/lib/formatters';
-import Stars from './components/Stars';
+import Stars from '../components/Stars';
 import snake2Image from '../../public/snake-2.png';
 import horseImage from '../../public/horse.jpg';
 import horsePhoneImage from '../../public/horse_phone.jpg';
