@@ -3,9 +3,9 @@
 import { RefObject } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useUploadThing } from '@/lib/uploadthing';
+import ButtonLoading from '@/components/Button-loading';
 import { ArrowRight } from 'lucide-react';
 import image from '../_lib/image';
 import { ConfigurationImageContext, useConfigurationImageContext, useCurrentOptionsContext } from './Configurator-context';
@@ -87,7 +87,7 @@ function SaveButton({ refs, configId }: SaveButtonProps) {
     startUpload,
   };
 
-  const { mutate: saveConfiguration } = useMutation({
+  const { mutate: saveConfiguration, isPending } = useMutation({
     mutationKey: ['save-config'],
     mutationFn: saveConfigurationMutation,
     onError: () => {
@@ -101,14 +101,17 @@ function SaveButton({ refs, configId }: SaveButtonProps) {
   });
 
   return (
-    <Button
+    <ButtonLoading
       size="sm"
       className="w-full"
+      disabled={isPending}
+      isLoading={isPending}
+      loadingText="Saving"
       onClick={() => saveConfiguration(saveConfigurationMutationArgs)}
     >
       Continue
       <ArrowRight className="h-4 w-4 ml-1.5" />
-    </Button>
+    </ButtonLoading>
   );
 }
 export default SaveButton;
