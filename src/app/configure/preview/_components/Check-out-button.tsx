@@ -1,7 +1,7 @@
 'use client';
 
 import { createCheckoutSession } from '@/app/actions/check-out';
-import { Button } from '@/components/ui/button';
+import ButtonLoading from '@/components/Button-loading';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
@@ -24,7 +24,7 @@ function CheckoutButton({ configuration, totalPrice }: CheckoutButtonProps) {
 
   const { isAuthenticated } = useKindeBrowserClient();
 
-  const { mutate: createPaymentSession } = useMutation({
+  const { mutate: createPaymentSession, isPending } = useMutation({
     mutationKey: ['checkout'],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
@@ -50,13 +50,16 @@ function CheckoutButton({ configuration, totalPrice }: CheckoutButtonProps) {
   };
 
   return (
-    <Button
+    <ButtonLoading
+      disabled={isPending}
+      isLoading={isPending}
+      loadingText="Preparing Payment"
       className="px-4 sm:px-6 lg:px-8"
       onClick={handleCheckout}
     >
       Check out
       <ArrowRight className="inline ml-1.5 h-4 w-4" />
-    </Button>
+    </ButtonLoading>
   );
 }
 export default CheckoutButton;
