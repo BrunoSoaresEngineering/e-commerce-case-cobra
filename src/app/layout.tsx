@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   description: 'Create custom high-quality phone cases in seconds',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
